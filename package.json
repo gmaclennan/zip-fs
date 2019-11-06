@@ -1,0 +1,28 @@
+{
+  "name": "random-access-zip",
+  "version": "1.0.0",
+  "description": "Random access to files in a zip archive",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape 'test/*.js'",
+    "lint": "standard",
+    "release": "standard-version"
+  },
+  "keywords": [
+    "unzip",
+    "zip"
+  ],
+  "author": "Gregor MacLennan",
+  "license": "MIT",
+  "dependencies": {
+    "concat-stream": "^2.0.0",
+    "duplexify": "^4.1.1",
+    "once": "^1.4.0",
+    "yauzl": "^2.10.0"
+  },
+  "devDependencies": {
+    "standard": "^14.3.1",
+    "standard-version": "^7.0.0",
+    "tape": "^4.11.0"
+  }
+}
