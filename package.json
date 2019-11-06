@@ -1,6 +1,6 @@
 {
   "name": "random-access-zip",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Random access to files in a zip archive",
   "main": "index.js",
   "scripts": {
