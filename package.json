@@ -4,7 +4,7 @@
   "description": "Random access to files in a zip archive",
   "main": "index.js",
   "scripts": {
-    "test": "tape 'test/*.js'",
+    "test": "tape \"test/*.js\"",
     "lint": "standard",
     "release": "standard-version"
   },
