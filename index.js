@@ -4,9 +4,12 @@ const duplexify = require('duplexify')
 const concat = require('concat-stream')
 const once = require('once')
 
+const noop = () => {}
+
 class Raz extends EventEmitter {
   constructor (path, cb) {
     super()
+    cb = cb ? once(cb) : noop
     this.path = path
     this._state = 'opening'
     yauzl.open(this.path, { autoClose: false }, (err, zipfile) => {
