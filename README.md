@@ -1,5 +1,6 @@
 # random-access-zip
 
+[![Github CI](https://github.com/gmaclennan/random-access-zip/workflows/NODE%20CI/badge.svg)](https://github.com/gmaclennan/random-access-zip/actions)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
 [![npm](https://img.shields.io/npm/v/random-access-zip?style=flat-square)](https://npmjs.org/package/random-access-zip)
 
