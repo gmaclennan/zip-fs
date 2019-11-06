@@ -24,5 +24,16 @@
     "standard": "^14.3.1",
     "standard-version": "^7.0.0",
     "tape": "^4.11.0"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gmaclennan/random-access-zip.git"
+  },
+  "bugs": {
+    "url": "https://github.com/gmaclennan/random-access-zip/issues"
+  },
+  "homepage": "https://github.com/gmaclennan/random-access-zip#readme"
 }
