@@ -1,0 +1,2 @@
+# Tell git not to convert line endings for txt files used in tests
+*.txt binary
