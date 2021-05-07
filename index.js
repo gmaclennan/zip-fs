@@ -3,8 +3,15 @@ const EventEmitter = require('events')
 const duplexify = require('duplexify')
 const concat = require('concat-stream')
 const once = require('once')
+const path = require('path')
+const fs = require('fs')
 
 const noop = () => {}
+
+const defaultReaddirOpts = {
+  encoding: 'utf8',
+  withFileTypes: false
+}
 
 class Raz extends EventEmitter {
   constructor (path, cb) {
@@ -12,6 +19,7 @@ class Raz extends EventEmitter {
     cb = cb ? once(cb) : noop
     this.path = path
     this._state = 'opening'
+    this._files = []
     yauzl.open(this.path, { autoClose: false }, (err, zipfile) => {
       if (err) {
         this._state = 'error'
@@ -23,6 +31,7 @@ class Raz extends EventEmitter {
       this._zipfile = zipfile
       this._entries = {}
       zipfile.on('entry', entry => {
+        this._files.push(entry.fileName)
         // Ignore directory entries
         if (/\/$/.test(entry.fileName)) return
         this._entries[entry.fileName] = entry
@@ -98,6 +107,33 @@ class Raz extends EventEmitter {
     const rs = this.createReadStream(fileName, opts)
     rs.on('error', cb)
     rs.pipe(concat(data => cb(null, data)))
+  }
+
+  readdir (filePath, opts, cb) {
+    if (typeof opts === 'function') {
+      cb = opts
+      opts = undefined
+    }
+    opts = Object.assign({}, defaultReaddirOpts, opts)
+    const relPath = path.resolve('/', filePath).slice(1)
+    this._onReady(err => {
+      if (err) return cb(err)
+      const ents = new Map()
+      for (const f of this._files) {
+        if (relPath && !f.startsWith(relPath + '/')) continue
+        const parts = f.slice(relPath.length).split('/')
+        if (!parts[0]) continue
+        const type =
+          parts.length === 1
+            ? fs.constants.UV_DIRENT_FILE
+            : fs.constants.UV_DIRENT_DIR
+        ents.set(parts[0], type)
+      }
+      const result = [...ents].map(([name, type]) => {
+        return opts.withFileTypes ? new fs.Dirent(name, type) : name
+      })
+      cb(null, result)
+    })
   }
 
   close () {
