@@ -90,7 +90,10 @@ class Raz extends EventEmitter {
   }
 
   readFile (fileName, opts, cb) {
-    if (typeof opts === 'function') cb = opts
+    if (typeof opts === 'function') {
+      cb = opts
+      opts = undefined
+    }
     cb = once(cb)
     const rs = this.createReadStream(fileName, opts)
     rs.on('error', cb)
