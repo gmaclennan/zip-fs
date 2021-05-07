@@ -123,4 +123,16 @@ test('Bad zipfile tests', t => {
   })
 })
 
+test('readdir', t => {
+  const zip = new Raz(
+    path.join(__dirname, './success/windows-7-zip.zip'),
+    err => t.error(err, 'No error when opening zipfile')
+  )
+  zip.readdir('/', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files, ['a.txt', 'b.txt'])
+    t.end()
+  })
+})
+
 // TODO: Tests for closind and cleaning up file descriptors
