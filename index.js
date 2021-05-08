@@ -3,7 +3,6 @@ const EventEmitter = require('events')
 const duplexify = require('duplexify')
 const concat = require('concat-stream')
 const once = require('once')
-const path = require('path')
 const fs = require('fs')
 
 const noop = () => {}
@@ -115,8 +114,7 @@ class Raz extends EventEmitter {
       opts = undefined
     }
     opts = Object.assign({}, defaultReaddirOpts, opts)
-    const relPath = path.resolve('/', filePath).slice(1)
-    console.log('relpath', relPath)
+    const relPath = makeRelativeToRoot(filePath)
     this._onReady(err => {
       if (err) return cb(err)
       const ents = new Map()
@@ -145,3 +143,9 @@ class Raz extends EventEmitter {
 }
 
 module.exports = Raz
+
+// Similar to path.relative('/', filePath) but will treat as POSIX on Windows,
+// since zipfile paths are all posix
+function makeRelativeToRoot (filePath) {
+  return filePath.replace(/^\.\/|^.$|^\//, '').replace(/(.+)\/$/, '$1')
+}

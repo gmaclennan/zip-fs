@@ -126,7 +126,7 @@ test('Bad zipfile tests', t => {
 const expectedRoot = ['a.txt', 'folder1', 'folder2', 'folder1extra'].sort()
 const expectedFolder1 = ['b.txt']
 
-test.only('readdir root', t => {
+test('readdir root', t => {
   t.plan(5)
   const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
     t.error(err, 'No error when opening zipfile')
