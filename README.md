@@ -6,7 +6,7 @@
 
 > Extract individual files from a zipfile on disk
 
-I wanted a way to read individual files efficiently from a zipfile without extracting the whole zipfile, and couldn't find an existing library with an API that I liked. Uses [`yauzl`](https://github.com/thejoshwolfe/yauzl) under the hood. This might be slow for zip files with hundreds of entries, because it reads through the entire central directory before returning any files. The entire central directory is also stored in memory, but the zipfile is not stored in memory and files are streamed from disk, so memory usage should be low. See all the [limitations of `yauzl`](https://github.com/thejoshwolfe/yauzl#limitations) which also apply to this library.
+I wanted a way to read individual files efficiently from a zipfile without extracting the whole zipfile, and couldn't find an existing library with an API that I liked. The API is similar to the [Node `fs` module](https://nodejs.org/api/fs.html). Uses [`yauzl`](https://github.com/thejoshwolfe/yauzl) under the hood. This might be slow for zip files with hundreds of entries, because it reads through the entire central directory before returning any files. The entire central directory is also stored in memory, but the zipfile is not stored in memory and files are streamed from disk, so memory usage should be low. See all the [limitations of `yauzl`](https://github.com/thejoshwolfe/yauzl#limitations) which also apply to this library.
 
 ## Table of Contents
 
