@@ -1,8 +1,8 @@
-# random-access-zip
+# zip-fs
 
-[![Github CI](https://github.com/gmaclennan/random-access-zip/workflows/Node%20CI/badge.svg)](https://github.com/gmaclennan/random-access-zip/actions)
+[![Github CI](https://github.com/gmaclennan/zip-fs/workflows/Node%20CI/badge.svg)](https://github.com/gmaclennan/zip-fs/actions)
 [![standard-readme compliant](https://img.shields.io/badge/standard--readme-OK-green.svg?style=flat-square)](https://github.com/RichardLitt/standard-readme)
-[![npm](https://img.shields.io/npm/v/random-access-zip?style=flat-square)](https://npmjs.org/package/random-access-zip)
+[![npm](https://img.shields.io/npm/v/zip-fs?style=flat-square)](https://npmjs.org/package/zip-fs)
 
 > Extract individual files from a zipfile on disk
 
@@ -20,7 +20,7 @@ I wanted a way to read individual files efficiently from a zipfile without extra
 ## Install
 
 ```sh
-npm install random-access-zip
+npm install zip-fs
 ```
 
 ## Usage
@@ -28,9 +28,9 @@ npm install random-access-zip
 Works similarly to `fs.createReadStream()` and `fs.readFile()`.
 
 ```js
-const Raz = require('random-access-zip')
+const ZipFs = require('zip-fs')
 
-const zip = new Raz('my_zip_file.zip')
+const zip = new ZipFs('my_zip_file.zip')
 
 const rs = zip.createReadStream('a.txt', 'utf8')
 // Pipe to console
@@ -41,7 +41,7 @@ rs.on('end', () => zip.close())
 
 ## API
 
-### `const zip = new RandomAccessZip(path[, cb])`
+### `const zip = new ZipFs(path[, cb])`
 
 Create a new random access zipfile reader for a zipfile at `path`. The optional callback will be called when the zipfile is ready to read, or if there is an error reading the zipfile. However, you do not need to wait for this in order to call the read methods.
 

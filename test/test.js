@@ -2,7 +2,7 @@ const test = require('tape')
 const fs = require('fs')
 const path = require('path')
 const concat = require('concat-stream')
-const Raz = require('../')
+const ZipFs = require('../')
 
 test('Read tests for good zip files', t => {
   const files = fs.readdirSync(path.join(__dirname, 'success'))
@@ -15,7 +15,7 @@ test('Read tests for good zip files', t => {
         zipFilename.replace(/\.zip$/, ''),
         'a.txt'
       )
-      const zip = new Raz(zipFilename, err =>
+      const zip = new ZipFs(zipFilename, err =>
         t.error(err, 'No error when opening zipfile')
       )
 
@@ -108,7 +108,7 @@ test('Bad zipfile tests', t => {
     const filepath = path.join(__dirname, 'failure', filename)
     t.test('Testing bad zip: ' + filename, t => {
       t.plan(3)
-      const zip = new Raz(filepath, err => {
+      const zip = new ZipFs(filepath, err => {
         t.ok(err instanceof Error, 'Callback called with error')
       })
       const rs = zip.createReadStream('a.txt')
@@ -128,7 +128,7 @@ const expectedFolder1 = ['b.txt']
 
 test('readdir root', t => {
   t.plan(5)
-  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+  const zip = new ZipFs(path.join(__dirname, './readdir.zip'), err =>
     t.error(err, 'No error when opening zipfile')
   )
   zip.readdir('/', (err, files) => {
@@ -143,7 +143,7 @@ test('readdir root', t => {
 
 test('readdir nested folder', t => {
   t.plan(9)
-  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+  const zip = new ZipFs(path.join(__dirname, './readdir.zip'), err =>
     t.error(err, 'No error when opening zipfile')
   )
   zip.readdir('folder1', (err, files) => {
@@ -165,7 +165,7 @@ test('readdir nested folder', t => {
 })
 
 test('readdir empty folder', t => {
-  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+  const zip = new ZipFs(path.join(__dirname, './readdir.zip'), err =>
     t.error(err, 'No error when opening zipfile')
   )
   zip.readdir('./folder2', (err, files) => {
@@ -176,7 +176,7 @@ test('readdir empty folder', t => {
 })
 
 test('readdir dirent', t => {
-  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+  const zip = new ZipFs(path.join(__dirname, './readdir.zip'), err =>
     t.error(err, 'No error when opening zipfile')
   )
   zip.readdir('/', { withFileTypes: true }, (err, files) => {

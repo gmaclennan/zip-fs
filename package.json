@@ -1,5 +1,5 @@
 {
-  "name": "random-access-zip",
+  "name": "zip-fs",
   "version": "1.0.1",
   "description": "Random access to files in a zip archive",
   "main": "index.js",
@@ -31,10 +31,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/gmaclennan/random-access-zip.git"
+    "url": "git+https://github.com/gmaclennan/zip-fs.git"
   },
   "bugs": {
-    "url": "https://github.com/gmaclennan/random-access-zip/issues"
+    "url": "https://github.com/gmaclennan/zip-fs/issues"
   },
-  "homepage": "https://github.com/gmaclennan/random-access-zip#readme"
+  "homepage": "https://github.com/gmaclennan/zip-fs#readme"
 }

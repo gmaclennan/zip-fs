@@ -11,7 +11,7 @@ const defaultReaddirOpts = {
   withFileTypes: false
 }
 
-class Raz extends EventEmitter {
+class ZipFs extends EventEmitter {
   constructor (path, cb) {
     super()
     cb = cb ? once(cb) : noop
@@ -141,7 +141,7 @@ class Raz extends EventEmitter {
   }
 }
 
-module.exports = Raz
+module.exports = ZipFs
 
 // Similar to path.relative('/', filePath) but will treat as POSIX on Windows,
 // since zipfile paths are all posix
