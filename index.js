@@ -121,7 +121,7 @@ class Raz extends EventEmitter {
       const ents = new Map()
       for (const f of this._files) {
         if (relPath && !f.startsWith(relPath + '/')) continue
-        const parts = f.slice(relPath.length).split('/')
+        const parts = (relPath ? f.slice(relPath.length + 1) : f).split('/')
         if (!parts[0]) continue
         const type =
           parts.length === 1
