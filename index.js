@@ -116,6 +116,7 @@ class Raz extends EventEmitter {
     }
     opts = Object.assign({}, defaultReaddirOpts, opts)
     const relPath = path.resolve('/', filePath).slice(1)
+    console.log('relpath', relPath)
     this._onReady(err => {
       if (err) return cb(err)
       const ents = new Map()
