@@ -1,6 +1,6 @@
 {
   "name": "zip-fs",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "description": "Random access to files in a zip archive",
   "main": "index.js",
   "scripts": {
