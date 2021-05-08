@@ -8,7 +8,6 @@ const fs = require('fs')
 const noop = () => {}
 
 const defaultReaddirOpts = {
-  encoding: 'utf8',
   withFileTypes: false
 }
 
