@@ -123,4 +123,75 @@ test('Bad zipfile tests', t => {
   })
 })
 
+const expectedRoot = ['a.txt', 'folder1', 'folder2', 'folder1extra'].sort()
+const expectedFolder1 = ['b.txt']
+
+test('readdir root', t => {
+  t.plan(5)
+  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+    t.error(err, 'No error when opening zipfile')
+  )
+  zip.readdir('/', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files.sort(), expectedRoot)
+  })
+  zip.readdir('.', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files.sort(), expectedRoot)
+  })
+})
+
+test('readdir nested folder', t => {
+  t.plan(9)
+  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+    t.error(err, 'No error when opening zipfile')
+  )
+  zip.readdir('folder1', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files.sort(), expectedFolder1)
+  })
+  zip.readdir('./folder1', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files.sort(), expectedFolder1)
+  })
+  zip.readdir('/folder1', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files.sort(), expectedFolder1)
+  })
+  zip.readdir('folder1/', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files.sort(), expectedFolder1)
+  })
+})
+
+test('readdir empty folder', t => {
+  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+    t.error(err, 'No error when opening zipfile')
+  )
+  zip.readdir('./folder2', (err, files) => {
+    t.error(err, 'No error')
+    t.deepEqual(files, [])
+    t.end()
+  })
+})
+
+test('readdir dirent', t => {
+  const zip = new Raz(path.join(__dirname, './readdir.zip'), err =>
+    t.error(err, 'No error when opening zipfile')
+  )
+  zip.readdir('/', { withFileTypes: true }, (err, files) => {
+    t.error(err, 'No error')
+    files.sort()
+    t.equal(files[0].name, 'a.txt')
+    t.true(files[0].isFile())
+    t.equal(files[1].name, 'folder1')
+    t.true(files[1].isDirectory())
+    t.equal(files[2].name, 'folder2')
+    t.true(files[2].isDirectory())
+    t.equal(files[3].name, 'folder1extra')
+    t.true(files[3].isDirectory())
+    t.end()
+  })
+})
+
 // TODO: Tests for closind and cleaning up file descriptors

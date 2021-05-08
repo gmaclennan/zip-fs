@@ -3,8 +3,13 @@ const EventEmitter = require('events')
 const duplexify = require('duplexify')
 const concat = require('concat-stream')
 const once = require('once')
+const fs = require('fs')
 
 const noop = () => {}
+
+const defaultReaddirOpts = {
+  withFileTypes: false
+}
 
 class Raz extends EventEmitter {
   constructor (path, cb) {
@@ -12,6 +17,7 @@ class Raz extends EventEmitter {
     cb = cb ? once(cb) : noop
     this.path = path
     this._state = 'opening'
+    this._files = []
     yauzl.open(this.path, { autoClose: false }, (err, zipfile) => {
       if (err) {
         this._state = 'error'
@@ -23,6 +29,7 @@ class Raz extends EventEmitter {
       this._zipfile = zipfile
       this._entries = {}
       zipfile.on('entry', entry => {
+        this._files.push(entry.fileName)
         // Ignore directory entries
         if (/\/$/.test(entry.fileName)) return
         this._entries[entry.fileName] = entry
@@ -100,6 +107,33 @@ class Raz extends EventEmitter {
     rs.pipe(concat(data => cb(null, data)))
   }
 
+  readdir (filePath, opts, cb) {
+    if (typeof opts === 'function') {
+      cb = opts
+      opts = undefined
+    }
+    opts = Object.assign({}, defaultReaddirOpts, opts)
+    const relPath = makeRelativeToRoot(filePath)
+    this._onReady(err => {
+      if (err) return cb(err)
+      const ents = new Map()
+      for (const f of this._files) {
+        if (relPath && !f.startsWith(relPath + '/')) continue
+        const parts = (relPath ? f.slice(relPath.length + 1) : f).split('/')
+        if (!parts[0]) continue
+        const type =
+          parts.length === 1
+            ? fs.constants.UV_DIRENT_FILE
+            : fs.constants.UV_DIRENT_DIR
+        ents.set(parts[0], type)
+      }
+      const result = [...ents].map(([name, type]) => {
+        return opts.withFileTypes ? new fs.Dirent(name, type) : name
+      })
+      cb(null, result)
+    })
+  }
+
   close () {
     this._state = 'closed'
     if (!this._zipfile) return
@@ -108,3 +142,9 @@ class Raz extends EventEmitter {
 }
 
 module.exports = Raz
+
+// Similar to path.relative('/', filePath) but will treat as POSIX on Windows,
+// since zipfile paths are all posix
+function makeRelativeToRoot (filePath) {
+  return filePath.replace(/^\.\/|^.$|^\//, '').replace(/(.+)\/$/, '$1')
+}

@@ -28,15 +28,15 @@ npm install random-access-zip
 Works similarly to `fs.createReadStream()` and `fs.readFile()`.
 
 ```js
-const Raz = require("random-access-zip");
+const Raz = require('random-access-zip')
 
-const zip = new Raz("my_zip_file.zip");
+const zip = new Raz('my_zip_file.zip')
 
-const rs = zip.createReadStream("a.txt", "utf8");
+const rs = zip.createReadStream('a.txt', 'utf8')
 // Pipe to console
-rs.pipe(process.stdout);
+rs.pipe(process.stdout)
 // Cleanup after
-rs.on("end", () => zip.close());
+rs.on('end', () => zip.close())
 ```
 
 ## API
@@ -52,6 +52,14 @@ Returns a ReadableStream with the contents of the file `filename` in the zipfile
 ### zip.readFile(filename[, opts], callback)
 
 `callback` is passed two arguments `(err, data)` where `data` is the contents of the file `filename` in the zipfile. `opts` can be a string encoding option, or an object with the property `opts.encoding`. If no encoding is specified, then the raw buffer is returned.
+
+### zip.readdir(path[, opts], callback)
+
+Similar to [`fs.readdir()`](https://nodejs.org/api/fs.html#fs_fs_readdir_path_options_callback). Reads the contents of a directory in the zip file. The callback gets two arguments (err, files) where files is an array of the names of the files in the directory excluding '.' and '..'.
+
+All paths are relative to the "root" of the zip file. `readdir('/folder')`, `readdir('folder')`, `readdir('folder/')` and `readdir('./folder')` are all functionally equivalent.
+
+If options.withFileTypes is set to true, the files array will contain [`fs.Dirent`](https://nodejs.org/api/fs.html#fs_class_fs_dirent) objects.
 
 ### zip.close()
 
