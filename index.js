@@ -134,9 +134,10 @@ class ZipFs extends EventEmitter {
     })
   }
 
-  close () {
+  close (cb) {
     this._state = 'closed'
     if (!this._zipfile) return
+    this._zipfile.once('close', cb)
     this._zipfile.close()
   }
 }

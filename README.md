@@ -28,15 +28,15 @@ npm install zip-fs
 Works similarly to `fs.createReadStream()` and `fs.readFile()`.
 
 ```js
-const ZipFs = require('zip-fs')
+const ZipFs = require("zip-fs");
 
-const zip = new ZipFs('my_zip_file.zip')
+const zip = new ZipFs("my_zip_file.zip");
 
-const rs = zip.createReadStream('a.txt', 'utf8')
+const rs = zip.createReadStream("a.txt", "utf8");
 // Pipe to console
-rs.pipe(process.stdout)
+rs.pipe(process.stdout);
 // Cleanup after
-rs.on('end', () => zip.close())
+rs.on("end", () => zip.close());
 ```
 
 ## API
@@ -61,9 +61,9 @@ All paths are relative to the "root" of the zip file. `readdir('/folder')`, `rea
 
 If options.withFileTypes is set to true, the files array will contain [`fs.Dirent`](https://nodejs.org/api/fs.html#fs_class_fs_dirent) objects.
 
-### zip.close()
+### zip.close(callback)
 
-Close the zipfile (cleans up the file descriptor).
+Close the zipfile (cleans up the file descriptor). `callback` is called once the file descriptor is actually closed.
 
 ## Maintainers
 
